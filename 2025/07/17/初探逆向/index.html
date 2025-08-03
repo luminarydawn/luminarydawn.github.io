@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
   
-  <meta name="robots" content="noindex,follow">
+  
   <meta name="generator" content="Hexo 7.3.0">
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   
@@ -17,24 +17,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
-  <title>Archives - 个人学习小屋</title>
+  <title>初探逆向 - 个人学习小屋</title>
 
   
-    <meta name="description" content="让我们一起打出个happy的大结局吧">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Archives">
-<meta property="og:url" content="https://luminarydawn.top/archives/2025/">
+    <meta name="description" content="IDA动态调试01 动态调试概述IDA作为一款强大的逆向集成工具，对于动态调试也有比较好的支持。利用IDA自带的动态调试功能可以完成大部分动态调试任务。 动态调试是一种观察程序运行时状态的一种手段。 逆向工程中的动态调试的目的主要有： 1 验证静态分析结果 2 观察程序运行时数据 IDA调试器支持的特性： 1 软件断点&#x2F;硬件断点&#x2F;条件断点&#x2F;脚本断点 2 步入&amp;#x2F">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初探逆向">
+<meta property="og:url" content="https://luminarydawn.top/2025/07/17/%E5%88%9D%E6%8E%A2%E9%80%86%E5%90%91/">
 <meta property="og:site_name" content="个人学习小屋">
-<meta property="og:description" content="让我们一起打出个happy的大结局吧">
+<meta property="og:description" content="IDA动态调试01 动态调试概述IDA作为一款强大的逆向集成工具，对于动态调试也有比较好的支持。利用IDA自带的动态调试功能可以完成大部分动态调试任务。 动态调试是一种观察程序运行时状态的一种手段。 逆向工程中的动态调试的目的主要有： 1 验证静态分析结果 2 观察程序运行时数据 IDA调试器支持的特性： 1 软件断点&#x2F;硬件断点&#x2F;条件断点&#x2F;脚本断点 2 步入&amp;#x2F">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://luminarydawn.top/images/7ae1b38a768172b08ec27c3ed234cf79.png">
+<meta property="article:published_time" content="2025-07-17T06:03:54.000Z">
+<meta property="article:modified_time" content="2025-08-03T09:12:57.140Z">
 <meta property="article:author" content="LuminaryDawn">
-<meta name="twitter:card" content="summary">
+<meta property="article:tag" content="逆向">
+<meta property="article:tag" content="入门">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://luminarydawn.top/images/7ae1b38a768172b08ec27c3ed234cf79.png">
   
   
   
-  
+  <meta name="keywords" content="逆向,入门">
 
   <!-- feed -->
   
@@ -46,12 +50,12 @@
 
   
 
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Website","@id":"https://luminarydawn.top","author":{"@type":"Person","name":"LuminaryDawn","sameAs":[],"image":"/images/7ae1b38a768172b08ec27c3ed234cf79.png"},"name":"个人学习小屋","description":"让我们一起打出个happy的大结局吧","url":"https://luminarydawn.top"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LuminaryDawn","sameAs":[],"image":"/images/7ae1b38a768172b08ec27c3ed234cf79.png"},"dateCreated":"2025-07-17T14:03:54+08:00","dateModified":"2025-08-03T17:12:57+08:00","datePublished":"2025-07-17T14:03:54+08:00","description":"","headline":"初探逆向","mainEntityOfPage":{"@type":"WebPage","@id":"https://luminarydawn.top/2025/07/17/%E5%88%9D%E6%8E%A2%E9%80%86%E5%90%91/"},"publisher":{"@type":"Organization","name":"LuminaryDawn","sameAs":[],"image":"/images/7ae1b38a768172b08ec27c3ed234cf79.png","logo":{"@type":"ImageObject","url":"/images/7ae1b38a768172b08ec27c3ed234cf79.png"}},"url":"https://luminarydawn.top/2025/07/17/%E5%88%9D%E6%8E%A2%E9%80%86%E5%90%91/","keywords":"逆向, 入门","thumbnailUrl":"/images/913155773FDA407B5041DF11C7584766.jpg","image":1}</script>
   <link rel="stylesheet" href="https://cdn.staticfile.org/lxgw-wenkai-screen-webfont/1.6.0/lxgwwenkaiscreen.css">
 </head>
 <body>
 
-<div class="l_body index" id="start" layout="undefined" type="undefined" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
 
 
 <header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/7ae1b38a768172b08ec27c3ed234cf79.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">个人学习小屋</div></a></div></header>
@@ -63,17 +67,71 @@
 <div class="widgets">
 <div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="Search"></form><div id="search-result"></div><div class="search-no-result">No Results!</div></div>
 
+
+
 <widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">Recent Update</span></div><div class="widget-body fs14"><a class="item title" href="/2025/07/14/%E9%80%86%E5%90%91%E9%A2%98%E7%9B%AE%E9%A2%98%E8%A7%A3/"><span class="title">逆向题目题解</span></a><a class="item title" href="/2025/07/17/%E5%88%9D%E6%8E%A2%E9%80%86%E5%90%91/"><span class="title">初探逆向</span></a><a class="item title" href="/2025/07/10/%E5%88%9D%E8%AF%86JAVA/"><span class="title">初识JAVA</span></a><a class="item title" href="/2025/07/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0/"><span class="title">安卓逆向入门笔记</span></a><a class="item title" href="/2025/07/18/TEa%E5%8A%A0%E5%AF%86/"><span class="title">TEA加密</span></a><a class="item title" href="/2025/07/22/RC4%E5%8A%A0%E5%AF%86/"><span class="title">RC4加密</span></a><a class="item title" href="/2025/07/22/IDA%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/"><span class="title">IDA使用技巧</span></a></div></widget>
 </div>
 
 </div></aside><div class="l_main" id="main">
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/7ae1b38a768172b08ec27c3ed234cf79.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">个人学习小屋</div></a></div></header>
-
- 
 
 
-<div class="navbar top"><div class="navbar-blur"><div class="navbar-container"><nav class="post"><a href="/">Recent</a><a href="/categories/">Categories</a><a href="/tags/">Tags</a><a class="active" href="/archives/">Archives</a></nav></div></div></div><div class="post-list archives"><article class="" id="archive"><div class='archive-header h4'>2025</div><div class="archive-list"><a class='post fs14' href="/2025/07/22/RC4%E5%8A%A0%E5%AF%86/"><time>07-22</time><span>RC4加密</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/07/22/IDA%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/"><time>07-22</time><span>IDA使用技巧</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/07/18/TEa%E5%8A%A0%E5%AF%86/"><time>07-18</time><span>TEA加密</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/07/17/%E5%88%9D%E6%8E%A2%E9%80%86%E5%90%91/"><time>07-17</time><span>初探逆向</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/07/14/%E9%80%86%E5%90%91%E9%A2%98%E7%9B%AE%E9%A2%98%E8%A7%A3/"><time>07-14</time><span>逆向题目题解</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/07/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0/"><time>07-11</time><span>安卓逆向入门笔记</span></a></div><div class="archive-list"><a class='post fs14' href="/2025/07/10/%E5%88%9D%E8%AF%86JAVA/"><time>07-10</time><span>初识JAVA</span></a></div></article></div>
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E9%80%86%E5%90%91/">逆向</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">Posted on: <time datetime="2025-07-17T06:03:54.000Z">2025-07-17</time></span><span class="sep updated"></span><span class="text updated">Updated on: <time datetime="2025-08-03T09:12:57.140Z">2025-08-03</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>初探逆向</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h1 id="IDA动态调试"><a href="#IDA动态调试" class="headerlink" title="IDA动态调试"></a>IDA动态调试</h1><h2 id="01-动态调试概述"><a href="#01-动态调试概述" class="headerlink" title="01 动态调试概述"></a>01 动态调试概述</h2><p>IDA作为一款强大的逆向集成工具，对于动态调试也有比较好的支持。利用IDA自带的动态调试功能可以完成大部分动态调试任务。</p>
+<p>动态调试是一种观察程序运行时状态的一种手段。</p>
+<p>逆向工程中的动态调试的目的主要有：</p>
+<p>1 验证静态分析结果</p>
+<p>2 观察程序运行时数据</p>
+<p><strong>IDA调试器支持的特性：</strong></p>
+<p>1 软件断点&#x2F;硬件断点&#x2F;条件断点&#x2F;脚本断点</p>
+<p>2 步入&#x2F;步过&#x2F;步出函数&#x2F;执行到光标位置</p>
+<p>3 汇编级&#x2F;伪代码级&#x2F;源码级 调试代码支持</p>
+<p>4 寄存器&#x2F;内存 读写</p>
+<p>5 启动进程调试&#x2F;附加调试</p>
+<h2 id="02-Linux-远程动态调试"><a href="#02-Linux-远程动态调试" class="headerlink" title="02 Linux 远程动态调试"></a>02 Linux 远程动态调试</h2><p>ELF文件无法在win 上直接运行</p>
+<p>IDA 远程调试需要一个远程调试服务端</p>
+<p>实际调试指令的执行由调试服务端完成，IDA充当调试前端</p>
+<p>IDA与该服务端通过tcp通信发送调试指令</p>
+<p>调试机与被调试机之间需要保证网络畅通，一般是在同一个内网</p>
+<h2 id="03-动态调试技巧"><a href="#03-动态调试技巧" class="headerlink" title="03 动态调试技巧"></a>03 动态调试技巧</h2><p>1 Ctrl + N 设置代码执行位置（可以用来跳过不想执行的代码）</p>
+<p>2 Lazy IDA插件批量修改内存数据【Paste data】</p>
+<p>3 附加调试（附加到一个正在运行的进程调试，一般成功后会断在一个固定的库函数里）</p>
+<p>​	1 一般用来调试动态库</p>
+<p>​	2 绕过一些反调试</p>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>License</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">Newer</div><a href="/2025/07/18/TEa%E5%8A%A0%E5%AF%86/">TEA加密</a></div><div class="item" id="next"><div class="note">Older</div><a href="/2025/07/14/%E9%80%86%E5%90%91%E9%A2%98%E7%9B%AE%E9%A2%98%E8%A7%A3/">逆向题目题解</a></div></section></div>
+
+
+
+
+
+
 <footer class="page-footer footnote"><hr><div class="text"><center>
 <span>
 © 2025
@@ -131,7 +189,12 @@
 </center>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel'>
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">On This Page</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#IDA%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="toc-text">IDA动态调试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#01-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E6%A6%82%E8%BF%B0"><span class="toc-text">01 动态调试概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#02-Linux-%E8%BF%9C%E7%A8%8B%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95"><span class="toc-text">02 Linux 远程动态调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#03-%E5%8A%A8%E6%80%81%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7"><span class="toc-text">03 动态调试技巧</span></a></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>Scroll to Top</span></a></div></widget>
+</div></aside><div class='float-panel'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>

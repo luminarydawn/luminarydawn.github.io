@@ -1,0 +1,956 @@
+
+<!DOCTYPE html><html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.33.1" theme-name="Stellar" theme-version="1.33.1">
+  
+  
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  <title>逆向题目题解 - 个人学习小屋</title>
+
+  
+    <meta name="description" content="记录了我目前做过的逆向题目和题解，以做题平台和比赛为分类依据 BUUCTF第八题 “helloword”既然是第一道题，那么写一个最简单的应该是很合理的 下载题目文件后，发现是一个.apk文件，把它拖入jadx，找到mainactivity,点开就是明晃晃的flag了  小结：题目确定没有拼错？？？ 第十题 “SimpleRev”下载文件后，拖入查壳软件中  没有壳，直接一套流程，就找到了伪代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逆向题目题解">
+<meta property="og:url" content="https://luminarydawn.top/2025/07/14/%E9%80%86%E5%90%91%E9%A2%98%E7%9B%AE%E9%A2%98%E8%A7%A3/">
+<meta property="og:site_name" content="个人学习小屋">
+<meta property="og:description" content="记录了我目前做过的逆向题目和题解，以做题平台和比赛为分类依据 BUUCTF第八题 “helloword”既然是第一道题，那么写一个最简单的应该是很合理的 下载题目文件后，发现是一个.apk文件，把它拖入jadx，找到mainactivity,点开就是明晃晃的flag了  小结：题目确定没有拼错？？？ 第十题 “SimpleRev”下载文件后，拖入查壳软件中  没有壳，直接一套流程，就找到了伪代码">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://luminarydawn.top/images/7ae1b38a768172b08ec27c3ed234cf79.png">
+<meta property="article:published_time" content="2025-07-14T02:25:11.000Z">
+<meta property="article:modified_time" content="2025-08-03T09:13:13.789Z">
+<meta property="article:author" content="LuminaryDawn">
+<meta property="article:tag" content="逆向">
+<meta property="article:tag" content="题解">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://luminarydawn.top/images/7ae1b38a768172b08ec27c3ed234cf79.png">
+  
+  
+  
+  <meta name="keywords" content="逆向,题解">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.33.1">
+
+
+  
+
+  
+
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LuminaryDawn","sameAs":[],"image":"/images/7ae1b38a768172b08ec27c3ed234cf79.png"},"dateCreated":"2025-07-14T10:25:11+08:00","dateModified":"2025-08-03T17:13:13+08:00","datePublished":"2025-07-14T10:25:11+08:00","description":"","headline":"逆向题目题解","mainEntityOfPage":{"@type":"WebPage","@id":"https://luminarydawn.top/2025/07/14/%E9%80%86%E5%90%91%E9%A2%98%E7%9B%AE%E9%A2%98%E8%A7%A3/"},"publisher":{"@type":"Organization","name":"LuminaryDawn","sameAs":[],"image":"/images/7ae1b38a768172b08ec27c3ed234cf79.png","logo":{"@type":"ImageObject","url":"/images/7ae1b38a768172b08ec27c3ed234cf79.png"}},"url":"https://luminarydawn.top/2025/07/14/%E9%80%86%E5%90%91%E9%A2%98%E7%9B%AE%E9%A2%98%E8%A7%A3/","keywords":"逆向, 题解","thumbnailUrl":"/images/913155773FDA407B5041DF11C7584766.jpg","image":1}</script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/lxgw-wenkai-screen-webfont/1.6.0/lxgwwenkaiscreen.css">
+</head>
+<body>
+
+<div class="l_body content" id="start" layout="post" type="tech" ><aside class="l_left"><div class="sidebg"></div><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="/images/7ae1b38a768172b08ec27c3ed234cf79.png" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main">个人学习小屋</div></a></div></header>
+
+<div class="nav-area">
+
+<nav class="menu dis-select"></nav>
+</div>
+<div class="widgets">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="Search"></form><div id="search-result"></div><div class="search-no-result">No Results!</div></div>
+
+
+
+<widget class="widget-wrapper recent post-list"><div class="widget-header dis-select"><span class="name">Recent Update</span></div><div class="widget-body fs14"><a class="item title" href="/2025/07/14/%E9%80%86%E5%90%91%E9%A2%98%E7%9B%AE%E9%A2%98%E8%A7%A3/"><span class="title">逆向题目题解</span></a><a class="item title" href="/2025/07/17/%E5%88%9D%E6%8E%A2%E9%80%86%E5%90%91/"><span class="title">初探逆向</span></a><a class="item title" href="/2025/07/10/%E5%88%9D%E8%AF%86JAVA/"><span class="title">初识JAVA</span></a><a class="item title" href="/2025/07/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0/"><span class="title">安卓逆向入门笔记</span></a><a class="item title" href="/2025/07/18/TEa%E5%8A%A0%E5%AF%86/"><span class="title">TEA加密</span></a><a class="item title" href="/2025/07/22/RC4%E5%8A%A0%E5%AF%86/"><span class="title">RC4加密</span></a><a class="item title" href="/2025/07/22/IDA%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/"><span class="title">IDA使用技巧</span></a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">Home</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">Blog</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E9%A2%98%E8%A7%A3/">题解</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">Posted on: <time datetime="2025-07-14T02:25:11.000Z">2025-07-14</time></span><span class="sep updated"></span><span class="text updated">Updated on: <time datetime="2025-08-03T09:13:13.789Z">2025-08-03</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>逆向题目题解</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p><strong>记录了我目前做过的逆向题目和题解，以做题平台和比赛为分类依据</strong></p>
+<h1 id="BUUCTF"><a href="#BUUCTF" class="headerlink" title="BUUCTF"></a>BUUCTF</h1><h2 id="第八题-“helloword”"><a href="#第八题-“helloword”" class="headerlink" title="第八题 “helloword”"></a>第八题 “helloword”</h2><p>既然是第一道题，那么写一个最简单的应该是很合理的</p>
+<p>下载题目文件后，发现是一个.apk文件，把它拖入jadx，找到mainactivity,点开就是明晃晃的flag了</p>
+<p><img src="/./../images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-07-14%20104821.png"></p>
+<p>小结：题目确定没有拼错？？？</p>
+<h2 id="第十题-“SimpleRev”"><a href="#第十题-“SimpleRev”" class="headerlink" title="第十题 “SimpleRev”"></a>第十题 “SimpleRev”</h2><p>下载文件后，拖入查壳软件中</p>
+<p><img src="/./../images/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-07-18%20100203-1752826352499-1.png"></p>
+<p>没有壳，直接一套流程，就找到了伪代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">tcall __noreturn <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">int</span> v3; <span class="comment">// eax</span></span><br><span class="line">  <span class="type">char</span> v4; <span class="comment">// [rsp+Fh] [rbp-1h]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;Welcome to CTF game!\nPlease input d/D to start or input q/Q to quit this program: &quot;</span>);</span><br><span class="line">      v4 = <span class="built_in">getchar</span>();</span><br><span class="line">      <span class="keyword">if</span> ( v4 != <span class="number">100</span> &amp;&amp; v4 != <span class="number">68</span> )</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      <span class="built_in">Decry</span>();<span class="comment">//关键函数，生成flag算法和比较算法</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ( v4 == <span class="number">113</span> || v4 == <span class="number">81</span> )</span><br><span class="line">      <span class="built_in">Exit</span>(<span class="string">&quot;Welcome to CTF game!\nPlease input d/D to start or input q/Q to quit this program: &quot;</span>, argv);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Input fault format!&quot;</span>);</span><br><span class="line">    v3 = <span class="built_in">getchar</span>();</span><br><span class="line">    <span class="built_in">putchar</span>(v3);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开Decry()函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">unsigned</span> __int64 <span class="title">Decry</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">char</span> v1; <span class="comment">// [rsp+Fh] [rbp-51h]</span></span><br><span class="line">  <span class="type">int</span> v2; <span class="comment">// [rsp+10h] [rbp-50h]</span></span><br><span class="line">  <span class="type">int</span> v3; <span class="comment">// [rsp+14h] [rbp-4Ch]</span></span><br><span class="line">  <span class="type">int</span> i; <span class="comment">// [rsp+18h] [rbp-48h]</span></span><br><span class="line">  <span class="type">int</span> v5; <span class="comment">// [rsp+1Ch] [rbp-44h]</span></span><br><span class="line">  <span class="type">char</span> src[<span class="number">8</span>]; <span class="comment">// [rsp+20h] [rbp-40h] BYREF</span></span><br><span class="line">  __int64 v7; <span class="comment">// [rsp+28h] [rbp-38h]</span></span><br><span class="line">  <span class="type">int</span> v8; <span class="comment">// [rsp+30h] [rbp-30h]</span></span><br><span class="line">  __int64 v9[<span class="number">2</span>]; <span class="comment">// [rsp+40h] [rbp-20h] BYREF</span></span><br><span class="line">  <span class="type">int</span> v10; <span class="comment">// [rsp+50h] [rbp-10h]</span></span><br><span class="line">  <span class="type">unsigned</span> __int64 v11; <span class="comment">// [rsp+58h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v11 = __readfsqword(<span class="number">0x28u</span>);</span><br><span class="line">  *(_QWORD *)src = <span class="number">0x534C43444ELL</span>;<span class="comment">//LL 是编程语言（如 C、C++ 等）中用于表示该数字为 long long 类型的后缀，并非数字本身的一部分，在转换成字符串时可以忽略，注意：数据在内存中是小端顺序，高位在高地址处，低位在低地址处，故实际的字符顺序应为&#x27;0x4e44434c53&#x27;经过16字符转换为ASCII码转换后字符为&#x27;NDCLS&#x27;</span></span><br><span class="line">  v7 = <span class="number">0LL</span>;</span><br><span class="line">  v8 = <span class="number">0</span>;</span><br><span class="line">  v9[<span class="number">0</span>] = <span class="number">0x776F646168LL</span>;<span class="comment">//同理转换</span></span><br><span class="line">  v9[<span class="number">1</span>] = <span class="number">0LL</span>;</span><br><span class="line">  v10 = <span class="number">0</span>;</span><br><span class="line">  text = <span class="built_in">join</span>(key3, (<span class="type">const</span> <span class="type">char</span> *)v9);</span><br><span class="line">  <span class="built_in">strcpy</span>(key, key1);</span><br><span class="line">  <span class="built_in">strcat</span>(key, src);</span><br><span class="line">  v2 = <span class="number">0</span>;</span><br><span class="line">  v3 = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">getchar</span>();</span><br><span class="line">  v5 = <span class="built_in">strlen</span>(key);</span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; v5; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span> ( key[v3 % v5] &gt; <span class="number">64</span> &amp;&amp; key[v3 % v5] &lt;= <span class="number">90</span> )</span><br><span class="line">      key[i] = key[v3 % v5] + <span class="number">32</span>;</span><br><span class="line">    ++v3;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Please input your flag:&quot;</span>);</span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    v1 = <span class="built_in">getchar</span>();</span><br><span class="line">    <span class="keyword">if</span> ( v1 == <span class="number">10</span> )</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">if</span> ( v1 == <span class="number">32</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      ++v2;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> ( v1 &lt;= <span class="number">96</span> || v1 &gt; <span class="number">122</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">if</span> ( v1 &gt; <span class="number">64</span> &amp;&amp; v1 &lt;= <span class="number">90</span> )</span><br><span class="line">        &#123;</span><br><span class="line">          str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>;</span><br><span class="line">          ++v3;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      &#123;</span><br><span class="line">        str2[v2] = (v1 - <span class="number">39</span> - key[v3 % v5] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span>;</span><br><span class="line">        ++v3;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> ( !(v3 % v5) )</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="number">32</span>);</span><br><span class="line">      ++v2;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> ( !<span class="built_in">strcmp</span>(text, str2) )</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Congratulation!\n&quot;</span>);</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Try again!\n&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> __readfsqword(<span class="number">0x28u</span>) ^ v11;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过观察和拼接可以得到key &#x3D; adsfkndcls	text &#x3D; killshadow</p>
+<p>下面是大佬的解密程序</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span> </span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="type">char</span> key[] = <span class="string">&quot;adsfkndcls&quot;</span>;</span><br><span class="line">	<span class="type">char</span> text[] = <span class="string">&quot;killshadow&quot;</span>;</span><br><span class="line">	<span class="type">int</span> i;</span><br><span class="line">	<span class="type">int</span> v3=<span class="number">10</span>;<span class="comment">//长度 </span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">0</span>; j &lt; <span class="number">128</span>; j++)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (j &lt; <span class="string">&#x27;A&#x27;</span> || j &gt; <span class="string">&#x27;z&#x27;</span> || j &gt; <span class="string">&#x27;Z&#x27;</span> &amp;&amp; j &lt; <span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> ((j - <span class="number">39</span> - key[v3 % <span class="number">10</span>] + <span class="number">97</span>) % <span class="number">26</span> + <span class="number">97</span> == text[i])</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="built_in">printf</span>(<span class="string">&quot;%c&quot;</span>,j);</span><br><span class="line">				v3++;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">————————————————</span><br><span class="line">版权声明：本文为CSDN博主「Wαff1ε」的原创文章，遵循CC <span class="number">4.0</span> BY-SA版权协议，转载请附上原文出处链接及本声明。</span><br><span class="line">原文链接：https:<span class="comment">//blog.csdn.net/Waffle666/article/details/110250158</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="DUCTF"><a href="#DUCTF" class="headerlink" title="DUCTF"></a>DUCTF</h1><p>也是第一次打国外的CTF比赛了，感觉自己又进化了（bush）</p>
+<h2 id="Rocky"><a href="#Rocky" class="headerlink" title="Rocky"></a>Rocky</h2><p>下载好附件包，发现是二进制文件，用IDA打开文件</p>
+<p>F5后得到伪代码</p>
+<p><img src="/./../images/image-20250723115303882.png" alt="image-20250723115303882"></p>
+<h3 id="题目逻辑"><a href="#题目逻辑" class="headerlink" title="题目逻辑"></a>题目逻辑</h3><p>这个题目的逻辑还是很简单的</p>
+<p>输入字符串—&gt;进行md5加密—&gt;将加密后的s2与已知数组s进行对比，一样就输出flag</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>s1数组是小端排序，想要获取数据有些麻烦</p>
+<p>所以我们用IDA远端动态调试来获取数据</p>
+<p><img src="/./../images/image-20250723120041654.png" alt="image-20250723120041654"></p>
+<p>将获得数据进行md5解密后就得到了我们想要输入的数据： emergencycall911</p>
+<p><a target="_blank" rel="noopener" href="https://hashes.com/zh/decrypt/hash">MD5 在線免費解密 MD5、SHA1、MySQL、NTLM、SHA256、SHA512、Wordpress、Bcrypt 的雜湊</a></p>
+<p>（感谢冬瓜大佬提供）</p>
+<p>重启调试，我们就得到了flag</p>
+<p><img src="/./../images/image-20250723120506433.png" alt="image-20250723120506433"></p>
+<h2 id="Skippy"><a href="#Skippy" class="headerlink" title="Skippy"></a>Skippy</h2><p>这个题目writeup和我的解法不一样，我的解法是纯静态分析</p>
+<h3 id="个人解法"><a href="#个人解法" class="headerlink" title="个人解法"></a>个人解法</h3><p>在下载文件并用IDA打开后，用F5查看伪代码</p>
+<p><strong>伪代码</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> __fastcall <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  _QWORD v4[<span class="number">2</span>]; <span class="comment">// [rsp+20h] [rbp-40h] BYREF</span></span><br><span class="line">  <span class="type">char</span> n64_1; <span class="comment">// [rsp+30h] [rbp-30h]</span></span><br><span class="line">  _QWORD v6[<span class="number">2</span>]; <span class="comment">// [rsp+40h] [rbp-20h] BYREF</span></span><br><span class="line">  <span class="type">char</span> n64; <span class="comment">// [rsp+50h] [rbp-10h]</span></span><br><span class="line"></span><br><span class="line">  _main();</span><br><span class="line">  v6[<span class="number">0</span>] = <span class="number">0xE8BEF2E0E0D2D6E6uLL</span>;</span><br><span class="line">  v6[<span class="number">1</span>] = <span class="number">0xBED0E6EAC4BECAD0uLL</span>;</span><br><span class="line">  n64 = <span class="number">64</span>;</span><br><span class="line">  <span class="built_in">sandwich</span>(v6);</span><br><span class="line">  v4[<span class="number">0</span>] = <span class="number">0xDEDEE4C2CEDCC2D6uLL</span>;</span><br><span class="line">  v4[<span class="number">1</span>] = <span class="number">0xDEDEDEDEDEDEDEDEuLL</span>;</span><br><span class="line">  n64_1 = <span class="number">64</span>;</span><br><span class="line">  <span class="built_in">sandwich</span>(v4);</span><br><span class="line">  <span class="built_in">decrypt_bytestring</span>(v6, v4);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从主函数我们可以看出来，现在有两个参数数组v6和v4在经过sandwich函数的改变后，传入decrypt_bytestring函数做参数</p>
+<p><strong>sandwich函数</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">__int64 __fastcall <span class="title">sandwich</span><span class="params">(__int64 a1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">stone</span>(a1);</span><br><span class="line">  <span class="built_in">decryptor</span>(a1);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">stone</span>(a1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>经过检查后发现sandwich函数中stone函数没有对传入a1进行改变，只有decryptor函数改变</p>
+<p>decryptor函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> __fastcall <span class="title">decryptor</span><span class="params">(__int64 a1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  Stream *Stream; <span class="comment">// rax</span></span><br><span class="line">  Stream *Stream_1; <span class="comment">// rax</span></span><br><span class="line">  <span class="type">int</span> result; <span class="comment">// eax</span></span><br><span class="line">  <span class="type">unsigned</span> __int64 i; <span class="comment">// [rsp+28h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  Stream = __acrt_iob_func(<span class="number">2u</span>);</span><br><span class="line">  <span class="built_in">fwrite</span>(<span class="string">&quot;Uh oh... Skippy sees a null zone in the way...\n&quot;</span>, <span class="number">1u</span>, <span class="number">0x2Fu</span>, Stream);</span><br><span class="line">  Stream_1 = __acrt_iob_func(<span class="number">2u</span>);</span><br><span class="line">  <span class="built_in">fflush</span>(Stream_1);</span><br><span class="line">  result = _mingw_printf(<span class="string">&quot;%d\n&quot;</span>, MEMORY[<span class="number">0</span>]);<span class="comment">//不必理会</span></span><br><span class="line">  <span class="comment">//真正改变传入的参数数组的算法</span></span><br><span class="line">  <span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt;= <span class="number">0xF</span>; ++i )</span><br><span class="line">  &#123;</span><br><span class="line">    result = a1 + i;</span><br><span class="line">    *(_BYTE *)(a1 + i) &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们发现其实就是将每个字节右移一位</p>
+<p>将数组 v6和v4带入，可以得到处理过后的数组</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v6[0] = 0x745F797070696B73  // 对应字符串 &quot;skippy_t&quot;</span><br><span class="line">v6[1] = 0x5F687375625F6568  // 对应字符串 &quot;he_bush_&quot;</span><br><span class="line">v4[0] = 0x6F6F7261676E616B  // 对应ASCII字符串 &quot;kangaroo&quot;（小端：6B=k,61=a,6E=n,67=g,61=a,72=r,6F=o,6F=o）</span><br><span class="line">v4[1] = 0x6F6F6F6F6F6F6F6F  // 对应ASCII字符串 &quot;oooooooo&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>decrypt_bytestring函数</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> __fastcall <span class="title">decrypt_bytestring</span><span class="params">(__int64 a1, __int64 a2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="type">void</span> *v2; <span class="comment">// rsp</span></span><br><span class="line">  _BYTE Buffer_1[<span class="number">200</span>]; <span class="comment">// [rsp+20h] [rbp-60h] BYREF</span></span><br><span class="line">  <span class="type">char</span> *Buffer; <span class="comment">// [rsp+E8h] [rbp+68h]</span></span><br><span class="line">  __int64 n96; <span class="comment">// [rsp+F0h] [rbp+70h]</span></span><br><span class="line">  <span class="type">size_t</span> Size; <span class="comment">// [rsp+F8h] [rbp+78h]</span></span><br><span class="line"></span><br><span class="line">  Size = <span class="number">96</span>;</span><br><span class="line">  n96 = <span class="number">96</span>;</span><br><span class="line">  v2 = <span class="built_in">alloca</span>(<span class="number">112</span>);</span><br><span class="line">  Buffer = Buffer_1;</span><br><span class="line">  <span class="built_in">memcpy</span>(Buffer_1, &amp;precomputed, <span class="number">0x60u</span>);<span class="comment">//获得加密密文</span></span><br><span class="line">  <span class="built_in">AES_init_ctx_iv</span>(Buffer_1, a1, a2);<span class="comment">//密钥拓展</span></span><br><span class="line">  <span class="built_in">AES_CBC_decrypt_buffer</span>(Buffer_1, Buffer, Size);</span><br><span class="line">  Buffer[Size] = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">stone</span>(Buffer);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">puts</span>(Buffer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后就是一个有密钥拓展的AES-CBC算法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.Padding <span class="keyword">import</span> pad, unpad</span><br><span class="line"><span class="keyword">from</span> Crypto.Random <span class="keyword">import</span> get_random_bytes</span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decrypt</span>(<span class="params">encrypted_data,key</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># Base64解码</span></span><br><span class="line">    raw_data = encrypted_data</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 提取IV(前16字节)和密文</span></span><br><span class="line">    iv = raw_data[:AES.block_size]</span><br><span class="line">    <span class="comment">#  ciphertext = raw_data[AES.block_size:]</span></span><br><span class="line">    ciphertext = raw_data[AES.block_size:]</span><br><span class="line">    <span class="comment"># 创建AES-CBC解密器</span></span><br><span class="line">    cipher = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 解密并去除填充</span></span><br><span class="line">    decrypted_data = unpad(cipher.decrypt(ciphertext), AES.block_size)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> decrypted_data.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者使用固定密钥(16字节)</span></span><br><span class="line">iv = <span class="string">b&#x27;kangaroooooooooo&#x27;</span></span><br><span class="line">key =  <span class="string">b&#x27;skippy_the_bush_&#x27;</span> </span><br><span class="line"></span><br><span class="line">ciphertext = <span class="built_in">bytes</span>.fromhex(iv.<span class="built_in">hex</span>()+<span class="string">&quot;AE27241B7FFD2C8B3265F22AD1B063F0915B6B95DCC0EEC14DE2C563F7715594007D2BC75E5D614E5E51190F4AD1FD21C5C4B1AB89A4A725C5B8ED3CB37630727B2D2AB722DC9333264725C6B5DDB00DD3C3DA6313F1E2F4DF5180D5F3831843&quot;</span>)</span><br><span class="line">decrypted = decrypt(ciphertext,key)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;解密后的数据:&quot;</span>, decrypted)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">len</span>(decrypted))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>运行一下结果就出来了</p>
+<p><img src="/./../images/image-20250723153002148.png" alt="image-20250723153002148"></p>
+<h3 id="官方解法"><a href="#官方解法" class="headerlink" title="官方解法"></a>官方解法</h3><p>查看伪代码，发现stone函数和decryptor函数存在无效指针读取操作</p>
+<p><img src="/./../images/image-20250725101952027.png" alt="image-20250725101952027"></p>
+<p><img src="/./../images/image-20250725102014987.png" alt="image-20250725102014987"></p>
+<p>找到对应的汇编，把对应结果给nop掉</p>
+<p><img src="/./../images/image-20250725102034257.png" alt="image-20250725102034257"></p>
+<p><img src="/./../images/image-20250725102057820.png" alt="image-20250725102057820"></p>
+<p>然后让程序运行一下就得到了flag</p>
+<p><img src="/./../images/image-20250725100757825.png" alt="image-20250725100757825"></p>
+<p>第一次修改汇编，发现程序并没有按照自己的修改跑起来，原本以为要用动态调试，结果报了一堆奇奇怪怪的错误，查资料后了解到是要将修改后的数据保存在输入的文件中</p>
+<p><img src="/./../images/image-20250725101625273.png" alt="image-20250725101625273"></p>
+<p>选择那个Apply patches to input file</p>
+<p>然后就可以正常运行了</p>
+</article>
+<div class="article-footer">
+    <section id="license">
+      <div class="header"><span>License</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    
+
+</div>
+
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">Newer</div><a href="/2025/07/17/%E5%88%9D%E6%8E%A2%E9%80%86%E5%90%91/">初探逆向</a></div><div class="item" id="next"><div class="note">Older</div><a href="/2025/07/11/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0/">安卓逆向入门笔记</a></div></section></div>
+
+
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><center>
+<span>
+© 2025
+<a style="font-weight: bold;  auto;" target="_blank" rel="noopener" href="https://github.com/FelicxFoster">luminarydawn</a>
+使用 <a style="font-weight: bold;  auto;" target="_blank" rel="noopener" href="https://github.com/FelicxFoster/hexo-theme-stellar">Stellar</a>
+创建
+</span>
+<br>
+<!--不蒜子计数器-->
+<script async="" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!--添加一个访问量-->
+<span>总访问 <span id="busuanzi_value_site_pv" style="font-weight: bold;">113701</span> 次 | 本页访问 <span id="busuanzi_value_page_pv" style="font-weight: bold;">326</span> 次</span>
+</br>
+<span id="runtime_span"></span>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    var runtime_span = document.getElementById('runtime_span');
+
+    function show_runtime() {
+      // 调用定时器
+      setTimeout(show_runtime, 1000);
+
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth();
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+
+      var t1 = Date.UTC(2025, 7, 31, 0, 0, 0); // UTC时间，月份从0开始
+      var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+      var diff = t2 - t1;
+
+      var diffYears = Math.floor(diff / years);
+      var diffDays = Math.floor((diff / days) - diffYears * 365);
+      var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+      var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+      var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+
+      // 更新显示时间的span元素内容
+      runtime_span.innerHTML = "🦉营业：" + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒🦉";
+    }
+
+    show_runtime(); // 初次调用函数以启动定时器
+  });
+</script>
+</center>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">On This Page</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#BUUCTF"><span class="toc-text">BUUCTF</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AB%E9%A2%98-%E2%80%9Chelloword%E2%80%9D"><span class="toc-text">第八题 “helloword”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%8D%81%E9%A2%98-%E2%80%9CSimpleRev%E2%80%9D"><span class="toc-text">第十题 “SimpleRev”</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DUCTF"><span class="toc-text">DUCTF</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Rocky"><span class="toc-text">Rocky</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E9%80%BB%E8%BE%91"><span class="toc-text">题目逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="toc-text">解题思路</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Skippy"><span class="toc-text">Skippy</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E8%A7%A3%E6%B3%95"><span class="toc-text">个人解法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E8%A7%A3%E6%B3%95"><span class="toc-text">官方解法</span></a></li></ol></li></ol></li></ol></div><div class="widget-footer"><a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Solar by 480 Design - https://creativecommons.org/licenses/by/4.0/ --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"><path stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/><path d="M7 3.338A9.95 9.95 0 0 1 12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12c0-1.821.487-3.53 1.338-5"/></g></svg><span>Scroll to Top</span></a></div></widget>
+</div></aside><div class='float-panel'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+
+
+<script type="text/javascript">
+  window.canonical = {"originalHost":null,"officialHosts":["localhost"],"encoded":""};
+  const ctx = {
+    date_suffix: {
+      just: `Just`,
+      min: `minutes ago`,
+      hour: `hours ago`,
+      day: `days ago`,
+    },
+    root : `/`,
+    tag_plugins: {
+      chat: Object.assign({"api":"https://siteinfo.listentothewind.cn/api/v1"}),
+    }
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"skip_search":null,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+    loading: `https://api.iconify.design/eos-icons:three-dots-loading.svg?color=%231cd0fd`,
+  };
+  const deps = {
+    jquery: `https://gcore.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js`,
+    marked: `https://gcore.jsdelivr.net/npm/marked@13.0/lib/marked.umd.min.js`,
+    lazyload: `/%5Bobject%20Object%5D`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = () => {
+          utils.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) => {
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index, 1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')) {
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function () {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      const maxRetry = 3;
+      let retryCount = 0;
+
+      return new Promise((resolve, reject) => {
+        const load = () => {
+          utils.onLoading?.(el);
+
+          let timedOut = false;
+          const timeout = setTimeout(() => {
+            timedOut = true;
+            console.warn('[request] 超时:', url);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject('请求超时');
+            } else {
+              setTimeout(load, 1000);
+            }
+          }, 5000);
+
+          fetch(url).then(resp => {
+            if (timedOut) return;
+            clearTimeout(timeout);
+
+            if (!resp.ok) throw new Error('响应失败');
+            return resp;
+          }).then(data => {
+            if (timedOut) return;
+            utils.onLoadSuccess?.(el);
+            callback(data);
+            resolve(data);
+          }).catch(err => {
+            clearTimeout(timeout);
+            console.warn('[request] 错误:', err);
+
+            if (++retryCount >= maxRetry) {
+              utils.onLoadFailure?.(el);
+              onFailure?.();
+              reject(err);
+            } else {
+              setTimeout(load, 1000);
+            }
+          });
+        };
+
+        load();
+      });
+    },
+    requestWithoutLoading: (url, options = {}, maxRetry = 2, timeout = 5000) => {
+      return new Promise((resolve, reject) => {
+        let retryCount = 0;
+
+        const tryRequest = () => {
+          let timedOut = false;
+          const timer = setTimeout(() => {
+            timedOut = true;
+            if (++retryCount > maxRetry) reject('timeout');
+            else tryRequest();
+          }, timeout);
+
+          fetch(url, options)
+            .then(resp => {
+              clearTimeout(timer);
+              if (!resp.ok) throw new Error('bad response');
+              resolve(resp);
+            })
+            .catch(err => {
+              clearTimeout(timer);
+              if (++retryCount > maxRetry) reject(err);
+              else setTimeout(tryRequest, 500);
+            });
+        };
+
+        tryRequest();
+      });
+    },
+    /********************** requestAnimationFrame ********************************/
+    // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+    // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+    requestAnimationFrame: (fn) => {
+      if (!window.requestAnimationFrame) {
+        window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+      }
+      window.requestAnimationFrame(fn)
+    },
+    dark: {},
+  };
+
+  // utils.dark.mode 当前模式 dark or light
+  // utils.dark.toggle() 暗黑模式触发器
+  // utils.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  utils.dark.method = {
+    toggle: new RunItem(),
+  };
+  utils.dark = Object.assign(utils.dark, {
+    push: utils.dark.method.toggle.push,
+  });
+</script>
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+<script async src="https://gcore.jsdelivr.net/npm/vanilla-lazyload@19.1/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+    callback_loaded: (el) => {
+      el.classList.add('loaded');
+      const wrapper = el.closest('.lazy-box');
+      const icon = wrapper?.querySelector('.lazy-icon');
+      if (icon) icon.remove();
+    }
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+
+  window.wrapLazyloadImages = (container) => {
+    if (typeof container === 'string') {
+      container = document.querySelector(container);
+    }
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    images.forEach((img) => {
+      if (img.classList.contains('lazy')) return;
+
+      const src = img.getAttribute('src');
+      if (!src) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'lazy-box';
+
+      const newImg = img.cloneNode();
+      newImg.removeAttribute('src');
+      newImg.setAttribute('data-src', src);
+      newImg.classList.add('lazy');
+
+      const icon = document.createElement('div');
+      icon.className = 'lazy-icon';
+      if (def.loading) {
+        icon.style.backgroundImage = `url("${def.loading}")`;
+      }
+
+      wrapper.appendChild(newImg);
+      wrapper.appendChild(icon);
+
+      img.replaceWith(wrapper);
+    });
+
+    // 通知 LazyLoad 更新
+    if (window.lazyLoadInstance?.update) {
+      window.lazyLoadInstance.update();
+    }
+  }
+  
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.33.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    // applyThemeToGiscus(theme)
+  }
+
+  // FIXME: 这会导致无法使用 preferred_color_scheme 以外的主题
+  const applyThemeToGiscus = (theme) => {
+    // theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+    utils.dark.mode = newTheme === 'auto' ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : newTheme;
+    utils.dark.method.toggle.start();
+
+    const messages = {
+      light: `Switched to Light Mode`,
+      dark: `Switched to Dark Mode`,
+      auto: `Switched to Auto Mode`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    } else {
+      utils.dark.mode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    utils.dark.method.toggle.start();
+  })()
+</script>
+
+
+<!-- optional -->
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"rating":{"js":"/js/services/rating.js","api":"https://star-vote.xaox.cc/api/rating"},"vote":{"js":"/js/services/vote.js","api":"https://star-vote.xaox.cc/api/vote"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"friends_and_posts":{"js":"/js/services/friends_and_posts.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"},"voice":{"js":"/js/plugins/voice.js"},"video":{"js":"/js/plugins/video.js"},"download-file":{"js":"/js/plugins/download-file.js"},"twikoo":{"js":"/js/services/twikoo_latest_comment.js"},"waline":{"js":"/js/services/waline_latest_comment.js"},"artalk":{"js":"/js/services/artalk_latest_comment.js"},"giscus":{"js":"/js/services/giscus_latest_comment.js"},"contributors":{"edit_this_page":{"_posts/":null,"wiki/stellar/":"https://github.com/xaoxuu/hexo-theme-stellar-docs/blob/main/"},"js":"/js/services/contributors.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else if (id == 'voice') {
+        ctx.voiceAudios = document.querySelectorAll('.voice>audio');
+        if (ctx.voiceAudios?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            createVoiceDom(ctx.voiceAudios);
+          });
+        }
+      } else if (id == 'video') {
+        ctx.videos = document.querySelectorAll('.video>video');
+        if (ctx.videos?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            videoEvents(ctx.videos);
+          });
+        }
+      } else if (id == 'download-file') {
+        ctx.files = document.querySelectorAll('.file');
+        if (ctx.files?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            downloadFileEvent(ctx.files);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+
+    // chat iphone time
+    let phoneTimes = document.querySelectorAll('.chat .status-bar .time');
+
+    if (phoneTimes.length > 0) {
+      NowTime();
+      var date = new Date();
+      var sec = date.getSeconds();
+      var firstAdjustInterval = setInterval(firstAdjustTime, 1000 * (60 - sec));
+    }
+
+    function firstAdjustTime() {
+      NowTime();
+      clearInterval(firstAdjustInterval);
+      setInterval(NowTime, 1000 * 60);
+    }
+
+    function NowTime() {
+      for (let i = 0; i < phoneTimes.length; ++i) {
+        var timeSpan = phoneTimes[i];
+        var date = new Date();
+        var hour = date.getHours();
+        var min = date.getMinutes();
+        timeSpan.innerHTML = check(hour) + ":" + check(min);
+      }
+    };
+
+    function check(val) {
+      if (val < 10) {
+        return ("0" + val);
+      }
+      return (val);
+    }
+
+    // chat quote
+    const chat_quote_obverser = new IntersectionObserver((entries, observer) => {
+      entries.filter((entry) => { return entry.isIntersecting }).sort((a, b) => a.intersectionRect.y !== b.intersectionRect.y ? a.intersectionRect.y - b.intersectionRect.y : a.intersectionRect.x - b.intersectionRect.x).forEach((entry, index) => {
+          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('quote-blink');
+            setTimeout(() => {
+              entry.target.classList.remove('quote-blink');
+            }, 1000);
+          }, Math.max(100, 16) * (index + 1));
+        });
+    });
+
+    var chatQuotes = document.querySelectorAll(".chat .talk .quote");
+    chatQuotes.forEach((quote) => {
+      quote.addEventListener('click', function () {
+        var chatCellDom = document.getElementById("quote-" + quote.getAttribute("quotedCellTag"));
+        if (chatCellDom) {
+          var chatDiv = chatCellDom.parentElement;
+          var mid = chatDiv.clientHeight / 2;
+          var offsetTop = chatCellDom.offsetTop;
+          if (offsetTop > mid - chatCellDom.clientHeight / 2) {
+            chatDiv.scrollTo({
+              top: chatCellDom.offsetTop - mid + chatCellDom.clientHeight / 2,
+              behavior: "smooth"
+            });
+          } else {
+            chatDiv.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+          }
+          chat_quote_obverser.observe(chatCellDom);
+        }
+      });
+    });
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://gcore.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://gcore.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error), .with-fancybox .atk-content img:not([atk-emoticon])';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const memos = document.getElementsByClassName('ds-memos');
+    if (memos != undefined && memos.length > 0) {
+      needFancybox = true;
+    }
+    const fancybox = document.getElementsByClassName('with-fancybox');
+    if (fancybox != undefined && fancybox.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
